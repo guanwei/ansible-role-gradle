@@ -23,6 +23,12 @@
     mode: "0755"
   become: true
 
+- name: Install unzip
+  apt:
+    name: unzip
+    state: present
+  become: true
+
 - name: Unpack Gradle package
   unarchive:
     src: "/tmp/{{ gradle_package_name }}"
