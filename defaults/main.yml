@@ -1,0 +1,14 @@
+---
+# Gradle version number
+gradle_version: 6.5.1
+
+gradle_package_name: gradle-{{ gradle_version }}-bin.zip
+
+# URL to download the Maven package from
+gradle_download_url: "https://services.gradle.org/distributions/{{ gradle_package_name }}"
+
+# Base Gradle installation directory
+gradle_install_dir: /opt/gradle
+
+# If this is the default installation, /etc/profile.d/gradle.sh will be set.
+gradle_is_default_installation: false

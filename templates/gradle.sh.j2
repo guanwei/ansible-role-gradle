@@ -1,0 +1,6 @@
+#jinja2: trim_blocks:False
+#
+# {{ ansible_managed }}
+#
+export GRADLE_HOME={{ gradle_install_dir }}/gradle-{{ gradle_version }}
+export PATH=$GRADLE_HOME/bin:$PATH

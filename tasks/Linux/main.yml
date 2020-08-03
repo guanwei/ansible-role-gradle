@@ -1,0 +1,38 @@
+---
+- block:
+    - name: Get Gradle sha256sum
+      set_fact:
+        gradle_sha256sum: "{{ lookup('url', '{{ gradle_download_url }}.sha256') }}"
+
+    - name: Download Gradle package
+      get_url:
+        url: "{{ gradle_download_url }}"
+        dest: "/tmp/{{ gradle_package_name }}"
+        checksum: "sha256:{{ gradle_sha256sum }}"
+      retries: 3
+      delay: 2
+      register: result
+      until: result is succeeded
+  delegate_to: localhost
+  become: false
+
+- name: Create Gradle installation directory if it does not exist
+  file:
+    path: "{{ gradle_install_dir }}"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Unpack Gradle package
+  unarchive:
+    src: "/tmp/{{ gradle_package_name }}"
+    dest: "{{ gradle_install_dir }}"
+    creates: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
+  become: yes
+
+- name: Copy Gradle profile file
+  template:
+    src: gradle.sh.j2
+    dest: /etc/profile.d/gradle.sh
+  become: true
+  when: gradle_is_default_installation | bool
