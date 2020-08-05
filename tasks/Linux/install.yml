@@ -1,0 +1,57 @@
+---
+- name: Create download directory
+  file:
+    dest: "{{ gradle_download_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Download Gradle sha256sum
+  get_url:
+    url: "{{ gradle_mirror }}/{{ gradle_redis_filename }}.sha256"
+    dest: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}.sha256"
+
+- name: Read Gradle sha256sum
+  slurp:
+    src: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}.sha256"
+  register: gradle_sha256sum
+
+- name: Download Gradle package
+  get_url:
+    url: "{{ gradle_mirror }}/{{ gradle_redis_filename }}"
+    dest: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}"
+    checksum: "sha256:{{ gradle_sha256sum.content | b64decode | trim }}"
+  retries: 3
+  delay: 2
+  register: result
+  until: result is succeeded
+
+- name: Install unarchive module dependencies
+  apt:
+    name:
+      - tar
+      - unzip
+      - gzip
+    state: present
+  become: true
+
+- name: Create Gradle installation directory
+  file:
+    path: "{{ gradle_install_dir }}"
+    state: directory
+    mode: "0755"
+  become: true
+
+- name: Unpack Gradle package
+  unarchive:
+    src: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}"
+    dest: "{{ gradle_install_dir }}"
+    remote_src: true
+    creates: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
+  become: yes
+
+- name: Copy Gradle profile file
+  template:
+    src: gradle.sh.j2
+    dest: /etc/profile.d/gradle.sh
+  become: true
+  when: gradle_is_default_installation | bool
