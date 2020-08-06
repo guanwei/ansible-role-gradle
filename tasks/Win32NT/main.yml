@@ -1,1 +1,9 @@
 ---
+- name: Check Gradle version is present
+  win_stat:
+    path: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}/bin/gradle"
+  register: gradle_present
+
+- name: Install Gradle
+  include_tasks: install.yml
+  when: not gradle_present.stat.exists

@@ -1,0 +1,38 @@
+---
+- name: Create download directory
+  win_file:
+    dest: "{{ gradle_download_dir }}"
+    state: directory
+
+- name: Download Gradle package
+  win_get_url:
+    url: "{{ gradle_mirror }}/{{ gradle_redis_filename }}"
+    dest: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}"
+
+- name: Create Gradle installation directory
+  win_file:
+    path: "{{ gradle_install_dir }}"
+    state: directory
+
+- name: Unpack Gradle package
+  win_unzip:
+    src: "{{ gradle_download_dir }}/{{ gradle_redis_filename }}"
+    dest: "{{ gradle_install_dir }}"
+    creates: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
+
+- block:
+    - name: Set Gradle environment
+      win_environment:
+        name: GRADLE_HOME
+        value: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}"
+        level: machine
+        state: present
+
+    - name: Add Gradle to PATH
+      win_path:
+        name: PATH
+        elements:
+          - "%GRADLE_HOME%/bin"
+        scope: machine
+        state: present
+  when: gradle_is_default_installation | bool

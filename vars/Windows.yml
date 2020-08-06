@@ -1,0 +1,6 @@
+---
+# Directory to store files downloaded for Gradle installation
+gradle_download_dir: "{{ x_ansible_download_dir | default(ansible_env.TEMP + '/ansible/downloads') }}"
+
+# Base Gradle installation directory
+gradle_install_dir: "C:/Gradle"

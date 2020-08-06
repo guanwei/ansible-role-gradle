@@ -1,3 +1,6 @@
 ---
-# Filename of Gradle redistributable package
-gradle_redis_filename: "gradle-{{ gradle_version }}-bin.zip"
+# Directory to store files downloaded for Gradle installation
+gradle_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
+
+# Base Gradle installation directory
+gradle_install_dir: "/opt/gradle"
