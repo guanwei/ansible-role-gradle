@@ -24,9 +24,9 @@ gradle_redis_filename: "gradle-{{ gradle_version }}-bin.zip"
 gradle_is_default_installation: false
 ```
 
-`gradle_download_dir` default is "%TEMP%/ansible/downloads" on Windows, "$HOME/.ansible/tmp/downloads" on Linux.
+`gradle_download_dir` default is `%TEMP%/ansible/downloads` on Windows, `$HOME/.ansible/tmp/downloads` on Linux.
 
-`gradle_install_dir` default is "C:/Gradle" on Windows, "/opt/gradle" on Linux.
+`gradle_install_dir` default is `C:/Gradle` on Windows, `/opt/gradle` on Linux.
 
 ## Dependencies
 
