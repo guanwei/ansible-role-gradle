@@ -17,15 +17,16 @@ gradle_version: 6.5.1
 # Mirror to download the Gradle redistributable package from
 gradle_mirror: "https://services.gradle.org/distributions"
 
-# Directory to store files downloaded for Gradle installation
-gradle_download_dir: "{{ x_ansible_download_dir | default(ansible_env.HOME + '/.ansible/tmp/downloads') }}"
-
-# Base Gradle installation directory
-gradle_install_dir: "/opt/gradle"
+# Filename of Gradle redistributable package
+gradle_redis_filename: "gradle-{{ gradle_version }}-bin.zip"
 
 # If this is the default installation, /etc/profile.d/gradle.sh will be set.
 gradle_is_default_installation: false
 ```
+
+`gradle_download_dir` default is "%TEMP%/ansible/downloads" on Windows, "$HOME/.ansible/tmp/downloads" on Linux.
+
+`gradle_install_dir` default is "C:/Gradle" on Windows, "/opt/gradle" on Linux.
 
 ## Dependencies
 
