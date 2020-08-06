@@ -1,5 +1,4 @@
 ---
----
 - name: Check Gradle version is present
   stat:
     path: "{{ gradle_install_dir }}/gradle-{{ gradle_version }}/bin/gradle"
