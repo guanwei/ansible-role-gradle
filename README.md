@@ -48,3 +48,23 @@ playbook.yml
   roles:
     - gradle
 ```
+
+You can install a specific version of Gradle by specifying the `gradle_version`:
+```
+- hosts: servers
+  roles:
+    - role: gradle
+      gradle_version: '6.3.9'
+```
+
+You can install the multiple versions of Gradle by using this role more than once:
+```
+- hosts: servers
+  roles:
+    - role: gradle
+      gradle_version: '6.2.5'
+
+    - role: gradle
+      gradle_version: '6.3.9'
+      gradle_is_default_installation: true
+```
